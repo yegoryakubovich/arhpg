@@ -25,10 +25,14 @@ class Settings(BaseSettings):
     API_USER_HOST: str
     API_USER_TOKEN: str
     API_USER_TAG_ID: str
+    API_EVENT_HOST: str
+    API_EVENT_TOKEN: str
 
     URL_PROGRAM_GENERAL: str
     URL_PROGRAM_PERSONAL: str
     URL_PROGRAM: str
+
+    HASH_HOST: str
 
     USEDESK_HOST: str
     USEDESK_ID: str
