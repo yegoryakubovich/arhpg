@@ -1,9 +1,9 @@
 FROM python:3.11-slim
 
-COPY ./requirements.txt /web/
+COPY ./requirements.txt /admin/
 
-WORKDIR /web
+WORKDIR /admin
 
 RUN pip install -r requirements.txt
 
-COPY . /web
+COPY . /admin

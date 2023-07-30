@@ -27,7 +27,7 @@ from app.db.manager import db_manager
 from app.repositories import Ticket, Text
 from app.repositories.ticket import TicketStates
 from app.utils.decorators import user_get
-from config import USEDESK_API_TOKEN, USEDESK_HOST
+from settings import settings
 
 
 @db_manager
@@ -50,28 +50,19 @@ async def handler_support(message: types.Message, user):
             photo_data = photo_file.read()
         files.append(('files[]', (photo.name, photo_data, 'image/jpeg')))
         message_text = message.caption or '(фото без комментариев)'
-    # elif message.document:
-    #     if not os.path.exists('temp'):
-    #         os.makedirs('temp')
-    #     document = message.document
-    #     await document.download(destination_dir='temp')
-    #     with open(document.file_name) as document_file:
-    #         document_data = document_file.read()
-    #     files.append(('files[]', (document.file_name, document_data, 'application/docx')))
-    #     message_text = message.caption or '(файл без комментариев)'
     else:
         await message.reply(text=Text.get('error_format'))
         return
 
     data = {
-        'api_token': USEDESK_API_TOKEN,
+        'api_token': settings.USEDESK_API_TOKEN,
         'subject': Text.get('subject_ticket'),
         'message': message_text,
         'client_name': user.firstname,
         'client_email': user.email
     }
 
-    response = requests.post(f'{USEDESK_HOST}/create/ticket', headers={}, data=data, files=files)
+    response = requests.post(f'{settings.USEDESK_HOST}/create/ticket', headers={}, data=data, files=files)
 
     if response.status_code == 200:
         response_data = response.json()

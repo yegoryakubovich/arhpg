@@ -4,24 +4,16 @@ from pathlib import Path
 import pymysql
 from environs import Env
 
-from web.config import web_settings
+from .config import web_settings
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 pymysql.install_as_MySQLdb()
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-n+*62!z*a5l$a6&!hooi0@b5$i-n0#i@fbrfcjtuk3!2ebu63r'
-# if not web_settings.MYSQL_HOST == "db":
-#     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', web_settings.WEB_IP]
-
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', web_settings.ADMIN_WEB_IP]
 
 # Application definition
 INSTALLED_APPS = [
@@ -64,59 +56,33 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'web.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': web_settings.MYSQL_NAME,
-        'USER': web_settings.MYSQL_USER,
-        'PASSWORD': web_settings.MYSQL_PASSWORD,
-        'HOST': web_settings.MYSQL_HOST,
-        'PORT': web_settings.MYSQL_PORT,
-
-    }
+        'NAME': web_settings.DB_NAME,
+        'USER': web_settings.DB_USER,
+        'PASSWORD': web_settings.DB_PASSWORD,
+        'HOST': web_settings.DB_HOST,
+        'PORT': web_settings.DB_PORT,
+    },
 }
 
-# Password validation
-# https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-# Internationalization
-# https://docs.djangoproject.com/en/4.0/topics/i18n/
-
 LANGUAGE_CODE = 'ru-ru'
-
 TIME_ZONE = 'Europe/Moscow'
-
 USE_I18N = True
-
 USE_TZ = True
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / "static", ]
 MEDIA_DIR = os.path.join(BASE_DIR, 'media')
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

@@ -10,3 +10,4 @@ beautifulsoup4
 confluent-kafka
 pysocks
 cryptography
+pydantic==1.*

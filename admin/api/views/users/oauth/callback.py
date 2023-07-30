@@ -13,4 +13,4 @@ class ApiUsersOauthCallbackView(View):
         if not code:
             return JsonResponse({'error': 'Code not found'})
         token = api_client.sso.oauth_token_create(code=code)
-        return HttpResponseRedirect(f'https://t.me/{web_settings.TELEGRAM_BOT_USERNAME}?start={token}')
+        return HttpResponseRedirect(f'https://t.me/{web_settings.TG_BOT_USERNAME}?start={token}')

@@ -18,7 +18,7 @@
 from datetime import datetime, timedelta
 
 from app.api_client.api_client_base import ApiClientBase, RequestTypes
-from config import API_XLE_CONTEXT, API_XLE_TOKEN
+from settings import settings
 
 
 class ApiClientXLE(ApiClientBase):
@@ -29,8 +29,8 @@ class ApiClientXLE(ApiClientBase):
             response = await self.get(
                 path=f'/api/v1/timetable/user/{arhpg_id}',
                 parameters={
-                    'app_token': API_XLE_TOKEN,
-                    'context': API_XLE_CONTEXT,
+                    'app_token': settings.API_XLE_TOKEN,
+                    'context': settings.API_XLE_CONTEXT,
                     'date': date.strftime('%Y-%m-%d')
                 },
             )
@@ -43,8 +43,8 @@ class ApiClientXLE(ApiClientBase):
         response = await self.get(
             path=f'/api/v1/timetable/user',
             parameters={
-                'app_token': API_XLE_TOKEN,
-                'context': API_XLE_CONTEXT,
+                'app_token': settings.API_XLE_TOKEN,
+                'context': settings.API_XLE_CONTEXT,
                 'date': today_date.strftime('%Y-%m-%d'),
                 'unti_ids': arhpg_id
             },
@@ -59,8 +59,8 @@ class ApiClientXLE(ApiClientBase):
             response = await self.get(
                 path=f'/api/v1/timetable/all',
                 parameters={
-                    'app_token': API_XLE_TOKEN,
-                    'context': API_XLE_CONTEXT,
+                    'app_token': settings.API_XLE_TOKEN,
+                    'context': settings.API_XLE_CONTEXT,
                     'date': date.strftime('%Y-%m-%d')
                 },
             )
@@ -72,7 +72,7 @@ class ApiClientXLE(ApiClientBase):
         response = await self.get(
             path=f'/request/participant',
             parameters={
-                'app_token': API_XLE_TOKEN,
+                'app_token': settings.API_XLE_TOKEN,
                 'unti_id': arhpg_id,
                 'type_uuid': event_id
             },

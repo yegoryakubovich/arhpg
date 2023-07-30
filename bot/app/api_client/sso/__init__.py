@@ -16,7 +16,7 @@
 
 
 from app.api_client.api_client_base import ApiClientBase
-from config import API_SSO_CLIENT_ID, API_SSO_REDIRECT_URL, API_SSO_CLIENT_SECRET
+from settings import settings
 
 
 class ApiClientSSO(ApiClientBase):
@@ -24,8 +24,8 @@ class ApiClientSSO(ApiClientBase):
         url = await self.url_create(
             path='/oauth2/authorize',
             parameters={
-                'client_id': API_SSO_CLIENT_ID,
-                'redirect_uri': API_SSO_REDIRECT_URL,
+                'client_id': settings.API_SSO_CLIENT_ID,
+                'redirect_uri': settings.API_SSO_REDIRECT_URL,
                 'response_type': 'code',
             },
         )
@@ -35,8 +35,8 @@ class ApiClientSSO(ApiClientBase):
         response = await self.post(
             path='/oauth2/access_token',
             data={
-                'client_id': API_SSO_CLIENT_ID,
-                'client_secret': API_SSO_CLIENT_SECRET,
+                'client_id': settings.API_SSO_CLIENT_ID,
+                'client_secret': settings.API_SSO_CLIENT_SECRET,
                 'grant_type': 'authorization_code',
                 'redirect_uri': '',
                 'code': code,

@@ -15,9 +15,9 @@
 #
 
 
-from app.db.db import db
-from app.db.manager import db_manager_sync
-from app.db.models import models
+from .db import db
+from .manager import db_manager_sync
+from .models import models
 
 
 @db_manager_sync

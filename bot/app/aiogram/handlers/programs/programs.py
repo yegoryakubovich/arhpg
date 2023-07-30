@@ -28,7 +28,7 @@ from app.repositories import Text
 from app.utils.api_client import api_client
 from app.utils.decorators import user_get
 from app.utils.events_get import events_get
-from config import URL_PROGRAM, URL_ALL_PROGRAM
+from settings import settings
 
 
 tz = timezone('Europe/Moscow')
@@ -60,7 +60,7 @@ async def handler_program(message: types.Message, user):
 
                 event_uuid = event.get('event_uuid')
                 if event_uuid:
-                    event_url = f"{URL_PROGRAM}{event_uuid}"
+                    event_url = f"{settings.URL_PROGRAM}{event_uuid}"
                     keyboard.add(InlineKeyboardButton(text=event_text, url=event_url))
                     counter += 1
 
@@ -69,13 +69,13 @@ async def handler_program(message: types.Message, user):
 
         if counter == 0:
             keyboard = InlineKeyboardMarkup().add(
-                InlineKeyboardButton(text=Text.get('entry_programs'), url=URL_ALL_PROGRAM)
+                InlineKeyboardButton(text=Text.get('entry_programs'), url=settings.URL_ALL_PROGRAM)
             )
             await message.answer(text=Text.get('error_not_programs'), reply_markup=keyboard)
             return
 
         if keyboard.inline_keyboard:
-            keyboard.add(InlineKeyboardButton(text=Text.get('full_programs'), url=URL_ALL_PROGRAM))
+            keyboard.add(InlineKeyboardButton(text=Text.get('full_programs'), url=settings.URL_ALL_PROGRAM))
             await message.answer(text=Text.get('shortly_user_programs'), reply_markup=keyboard)
 
     elif text == Text.get('general_programs'):

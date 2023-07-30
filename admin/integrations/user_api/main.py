@@ -5,8 +5,8 @@ from web.config import web_settings
 
 class UserApi:
     def __init__(self, host: str = None, token: str = None):
-        self.host: str = host if host else web_settings.USER_API_HOST
-        self.token: str = token if token else web_settings.USER_API_TOKEN
+        self.host: str = host if host else web_settings.API_USER_HOST
+        self.token: str = token if token else web_settings.API_USER_TOKEN
 
     def get_link(self, path: str):
         return f"{self.host}{path}"

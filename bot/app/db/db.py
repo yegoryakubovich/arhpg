@@ -17,15 +17,15 @@
 
 from peewee import MySQLDatabase
 
-from config import MYSQL_NAME, MYSQL_USER, MYSQL_PASSWORD, MYSQL_HOST, MYSQL_PORT
+from settings import settings
 
 
 db = MySQLDatabase(
-    database=MYSQL_NAME,
-    user=MYSQL_USER,
-    password=MYSQL_PASSWORD,
-    host=MYSQL_HOST,
-    port=MYSQL_PORT,
+    host=settings.DB_HOST,
+    port=settings.DB_PORT,
+    user=settings.DB_USER,
+    password=settings.DB_PASSWORD,
+    database=settings.DB_NAME,
     charset='utf8mb4',
     autoconnect=False,
 )

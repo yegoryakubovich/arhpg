@@ -19,8 +19,8 @@ from aiogram import Dispatcher
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.utils import executor
 
-from app.aiogram.bot import bot_get
-from app.aiogram.handlers.register import handlers_register
+from .bot import bot_get
+from .handlers.register import handlers_register
 
 
 storage = MemoryStorage()
@@ -37,4 +37,4 @@ dp = Dispatcher(bot=bot_get(), storage=storage)
 
 def bot_create():
     handlers_register(dp=dp)
-    executor.start_polling(dispatcher=dp,)
+    executor.start_polling(dispatcher=dp)

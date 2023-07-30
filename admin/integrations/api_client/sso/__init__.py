@@ -7,8 +7,8 @@ class ApiClientSSO(ApiClientBase):
         url = self.url_create(
             path='/oauth2/authorize',
             parameters={
-                'client_id': web_settings.SSO_CLIENT_ID,
-                'redirect_uri': web_settings.SSO_REDIRECT_URL,
+                'client_id': web_settings.API_SSO_CLIENT_ID,
+                'redirect_uri': web_settings.API_SSO_REDIRECT_URL,
                 'response_type': 'code',
             },
         )
@@ -18,8 +18,8 @@ class ApiClientSSO(ApiClientBase):
         response = self.post(
             path='/oauth2/access_token',
             data={
-                'client_id': web_settings.SSO_CLIENT_ID,
-                'client_secret': web_settings.SSO_CLIENT_SECRET,
+                'client_id': web_settings.API_SSO_CLIENT_ID,
+                'client_secret': web_settings.API_SSO_CLIENT_SECRET,
                 'grant_type': 'authorization_code',
                 'redirect_uri': '',
                 'code': code,

@@ -17,11 +17,11 @@
 
 from aiogram import Bot
 
-from config import TG_BOT_TOKEN
+from settings import settings
 
 
 def bot_get():
     bot = Bot(
-        token=TG_BOT_TOKEN,
+        token=settings.TG_BOT_TOKEN,
     )
     return bot

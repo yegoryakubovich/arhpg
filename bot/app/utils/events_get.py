@@ -24,7 +24,7 @@ from app.aiogram.callback_datas import program_callback_data
 from app.repositories import Text
 from app.repositories.setting import Setting
 from app.utils.api_client import api_client
-from config import URL_PROGRAM, URL_ALL_PROGRAM
+from settings import settings
 
 
 async def events_get(datetime_selected: datetime, page=1):
@@ -65,7 +65,7 @@ async def events_get(datetime_selected: datetime, page=1):
         event_datetime_end = datetime.fromisoformat(event_datetime_end_str[:-6])
         event_title = event.get('title')
         event_uuid = event.get('event_uuid')
-        event_url = f'{URL_PROGRAM}{event_uuid}'
+        event_url = f'{settings.URL_PROGRAM}{event_uuid}'
 
         message += f'{event_current}. {event_datetime_start.strftime("%d.%m %H:%M")} - ' \
                    f'{event_datetime_end.strftime("%H:%M")} ' \
@@ -104,7 +104,7 @@ async def events_get(datetime_selected: datetime, page=1):
     keyboard.row(*buttons)
     keyboard.add(InlineKeyboardButton(
         text=Text.get('full_programs'),
-        url=URL_ALL_PROGRAM,
+        url=settings.URL_ALL_PROGRAM,
     ))
 
     if event_current == 0:
