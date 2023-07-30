@@ -23,6 +23,8 @@ services:
       context: ./bot
       dockerfile: bot.dockerfile
     restart: on-failure
+    env_file:
+      - .env
     depends_on:
       - db
   db:
