@@ -44,8 +44,8 @@ def user_get(function):
         is_authorized = await User.is_authorized(tg_user_id=tg_user_id)
         if not is_authorized:
             oauth = await Oauth.create(tg_user_id)
-            hash = oauth.hash
-            redirect_url = f'{settings.HASH_HOST}?{hash}'
+            GEN = oauth.hash
+            redirect_url = settings.URL_OAUTH.format(hash=GEN)
 
             kb = InlineKeyboardMarkup(row_width=1)
             kb.add(InlineKeyboardButton(
