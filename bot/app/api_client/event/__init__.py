@@ -7,7 +7,7 @@ class ApiClientEVENT(ApiClientBase):
         response = await self.get(
             path=f'timetable/api/v1/events/{event_id}/signed-users',
             parameters={
-                'app_token': settings.API_EVENT_TOKEN,
+                'app_token': settings.API_TIMETABLE_TOKEN,
             },
         )
         users = response.get('payload', [])

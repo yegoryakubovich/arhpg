@@ -10,4 +10,4 @@ class ApiClient:
     sso = ApiClientSSO(host=settings.API_SSO_HOST)
     xle = ApiClientXLE(host=settings.API_XLE_HOST)
     user = ApiClientUSER(host=settings.API_USER_HOST)
-    event = ApiClientEVENT(host=settings.API_EVENT_HOST)
+    event = ApiClientEVENT(host=settings.API_TIMETABLE_HOST)

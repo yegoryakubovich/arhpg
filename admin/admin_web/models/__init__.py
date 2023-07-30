@@ -5,6 +5,7 @@ from .notification import Notification
 from .setting import Setting
 from .tag import Tag
 from .user import User
+from .oauth import Oauth
 
 """FIRST"""
 from .faq_attachment import FaqAttachment, FaqAttachmentType

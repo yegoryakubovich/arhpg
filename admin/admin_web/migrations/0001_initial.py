@@ -113,13 +113,13 @@ class Migration(migrations.Migration):
             name='Tag',
             fields=[
                 ('id', models.AutoField(primary_key=True, serialize=False)),
-                ('tag_id', models.CharField(max_length=128, verbose_name='ID Тэга')),
+                ('tag_id', models.CharField(max_length=128, verbose_name='ID Тега')),
                 ('name', models.CharField(max_length=128, verbose_name='Название')),
                 ('title', models.CharField(max_length=128, verbose_name='Заголовок')),
             ],
             options={
-                'verbose_name': 'Тэг',
-                'verbose_name_plural': 'Тэги',
+                'verbose_name': 'Тег',
+                'verbose_name_plural': 'Теги',
                 'db_table': 'tags',
                 'managed': False,
             },

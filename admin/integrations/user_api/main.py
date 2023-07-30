@@ -27,4 +27,4 @@ class UserApi:
         return self.get(path, app_token=self.token, tags=tag_id)
 
 
-user_api = UserApi(host="https://user-php.k8-dev.u2035dev.ru", token="NZB8dfw8qzqqcaxvb")
+user_api = UserApi()

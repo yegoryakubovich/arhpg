@@ -19,7 +19,7 @@ class User(models.Model):
     lastname = models.CharField(max_length=128, null=True, blank=True, verbose_name="Фамилия")
     email = models.CharField(max_length=256, null=True, blank=True, verbose_name="Почта")
 
-    tags = models.ManyToManyField(Tag, related_name="users_tags", verbose_name="Тэги")
+    tags = models.ManyToManyField(Tag, related_name="users_tags", verbose_name="Теги")
 
     def __str__(self):
         return f"{self.id} - {self.firstname}"
