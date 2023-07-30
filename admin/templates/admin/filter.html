@@ -1,0 +1,15 @@
+{% load i18n %}
+<h3 {% if spec.lookup_val or spec.value %}class="active"{% endif %}>
+    {% blocktrans with filter_title=title %} By {{ filter_title }} {% endblocktrans %}
+</h3>
+
+
+<div class="list-group {% if spec.lookup_val or spec.value %}active{% endif %}">
+    {% for choice in choices %}
+        <a href="{{ choice.query_string|iriencode }}" aria-current="true"
+           class="list-group-item list-group-item-action {% if choice.selected %}active{% endif %}">
+            {{ choice.display }}
+        </a>
+    {% endfor %}
+</div>
+

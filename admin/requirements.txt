@@ -1,0 +1,9 @@
+django
+environs
+loguru
+PyMySQL
+cryptography
+furl
+pydantic==1.*
+httpx
+django-celery-beat
