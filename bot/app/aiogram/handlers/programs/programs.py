@@ -13,6 +13,7 @@ from app.utils.decorators import user_get
 from app.utils.events_get import events_get
 from settings import settings
 
+
 tz = timezone('Europe/Moscow')
 
 
@@ -51,13 +52,13 @@ async def handler_program(message: types.Message, user):
 
         if counter == 0:
             keyboard = InlineKeyboardMarkup().add(
-                InlineKeyboardButton(text=Text.get('entry_programs'), url=URL_ALL_PROGRAM)
+                InlineKeyboardButton(text=Text.get('entry_programs'), url=settings.URL_PROGRAM_GENERAL)
             )
             await message.answer(text=Text.get('error_not_programs'), reply_markup=keyboard)
             return
 
         if keyboard.inline_keyboard:
-            keyboard.add(InlineKeyboardButton(text=Text.get('full_programs'), url=settings.URL_ALL_PROGRAM))
+            keyboard.add(InlineKeyboardButton(text=Text.get('full_programs'), url=settings.URL_PROGRAM_GENERAL))
             await message.answer(text=Text.get('shortly_user_programs'), reply_markup=keyboard)
 
     elif text == Text.get('general_programs'):

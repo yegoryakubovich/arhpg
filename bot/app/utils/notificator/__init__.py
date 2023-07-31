@@ -34,10 +34,10 @@ def notificator_thread():
     schedule.every(10).seconds.do(notificator)
     # schedule.every(10).seconds.do(notificator_kafka)
     schedule.every(1).minute.do(notificator_usedesk)
-    schedule.every(20).seconds.do(notificator_user)
+    schedule.every(3).seconds.do(notificator_user)
     while True:
         loop.run_until_complete(schedule.run_pending())
-        sleep(10)
+        sleep(1)
 
 
 def notificator_create():

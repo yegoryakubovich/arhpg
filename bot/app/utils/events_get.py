@@ -87,7 +87,7 @@ async def events_get(datetime_selected: datetime, page=1):
     keyboard.row(*buttons)
     keyboard.add(InlineKeyboardButton(
         text=Text.get('full_programs'),
-        url=settings.URL_ALL_PROGRAM,
+        url=settings.URL_PROGRAM_GENERAL,
     ))
 
     if event_current == 0:

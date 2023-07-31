@@ -1,4 +1,5 @@
 import json
+from warnings import filterwarnings
 
 from confluent_kafka import Consumer
 
@@ -11,6 +12,7 @@ from settings import settings
 
 @db_manager
 async def notificator_kafka():
+    filterwarnings("ignore", category=DeprecationWarning)
     bot = bot_get()
     kafka_config = {
         'bootstrap.servers': settings.KAFKA_BOOTSTRAP_SERVERS,

@@ -50,7 +50,7 @@ async def handler_support(message: types.Message, user):
         return
 
     data = {
-        'api_token': settings.USEDESK_API_TOKEN,
+        'api_token': settings.USEDESK_TOKEN,
         'subject': Text.get('subject_ticket'),
         'message': message_text,
         'client_name': user.firstname,

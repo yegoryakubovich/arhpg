@@ -2,7 +2,8 @@
 .vscode
 .mypy_cache
 .env
-.env.test
+test.env
+prod.env.env
 data
 src/bot/app/data/images/nft_items/*
 logs/

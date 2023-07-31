@@ -2,6 +2,7 @@ import asyncio
 import os
 import re
 import tempfile
+from warnings import filterwarnings
 
 import aiohttp
 from aiogram import types
@@ -20,12 +21,13 @@ lock = asyncio.Lock()
 
 @db_manager
 async def notificator_usedesk():
+    filterwarnings("ignore", category=DeprecationWarning)
     bot = bot_get()
     for ticket in Ticket.list_waiting_get():
         response = get(
             url=f'{settings.USEDESK_HOST}/ticket',
             params={
-                'api_token': settings.USEDESK_API_TOKEN,
+                'api_token': settings.USEDESK_TOKEN,
                 'ticket_id': ticket.ticket_id,
             },
         )

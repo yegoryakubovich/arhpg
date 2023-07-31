@@ -1,8 +1,8 @@
 from datetime import datetime, timezone
+from warnings import filterwarnings
 
 from app.aiogram import bot_get
 from app.aiogram.kbs import Kbs
-from app.aiogram.states import States
 from app.db.manager import db_manager
 from app.repositories import Oauth, User, Text
 from app.utils.api_client import api_client
@@ -10,6 +10,7 @@ from app.utils.api_client import api_client
 
 @db_manager
 async def notificator_user():
+    filterwarnings("ignore", category=DeprecationWarning)
     bot = bot_get()
     for oauth in Oauth.list_get():
         if oauth.expired.replace(tzinfo=timezone.utc) <= datetime.now(timezone.utc):
@@ -31,7 +32,8 @@ async def notificator_user():
                     email=email,
                 )
                 await api_client.user.add_tag_user(arhpg_id)
-                await States.menu.set()
+                # await States.menu.set()
                 await bot.send_message(chat_id=oauth.tg_user_id, text=Text.get('menu'), reply_markup=await Kbs.menu())
+                oauth.delete_instance()
 
     await bot.close()

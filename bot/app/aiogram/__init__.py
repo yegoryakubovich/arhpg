@@ -5,6 +5,7 @@ from aiogram.utils import executor
 from app.aiogram.bot import bot_get
 from app.aiogram.handlers.register import handlers_register
 
+
 storage = MemoryStorage()
 #  RedisStorage2(
 #     host=REDIS_HOST,

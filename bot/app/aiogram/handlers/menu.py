@@ -1,4 +1,6 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, KeyboardButton, Message, ReplyKeyboardMarkup
+
+from app.aiogram.kbs import Kbs
 from app.aiogram.states import States
 from app.db.manager import db_manager
 from app.repositories import Text, Faq, FaqTypes
@@ -44,3 +46,6 @@ async def handler_menu(message: Message, user):
         keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
         keyboard.add(KeyboardButton(Text.get('back')))
         await message.reply(text=Text.get('text_supports'), reply_markup=keyboard)
+    else:
+        await States.menu.set()
+        await message.reply(text=Text.get('error'), reply_markup=await Kbs.menu())

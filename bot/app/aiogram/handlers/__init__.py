@@ -10,7 +10,7 @@ from app.aiogram.handlers.support import handler_support
 from app.aiogram.states import States
 
 handlers = (
-    {'handler': handler_start, 'state': None, 'content_types': [ContentType.TEXT]},
+    {'handler': handler_menu, 'state': None, 'content_types': [ContentType.TEXT]},
     {'handler': handler_start, 'state': '*', 'content_types': [ContentType.TEXT], 'commands': ['start', 'menu']},
     {'handler': handler_menu, 'state': States.menu, 'content_types': [ContentType.TEXT]},
     {'handler': handler_program, 'state': States.programs, 'content_types': [ContentType.TEXT]},
