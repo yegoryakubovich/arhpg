@@ -2,6 +2,7 @@ import asyncio
 import os
 import re
 import tempfile
+import warnings
 from warnings import filterwarnings
 
 import aiohttp
@@ -21,91 +22,93 @@ lock = asyncio.Lock()
 
 @db_manager
 async def notificator_usedesk():
-    filterwarnings("ignore", category=DeprecationWarning)
     bot = bot_get()
-    for ticket in Ticket.list_waiting_get():
-        response = get(
-            url=f'{settings.USEDESK_HOST}/ticket',
-            params={
-                'api_token': settings.USEDESK_TOKEN,
-                'ticket_id': ticket.ticket_id,
-            },
-        )
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore", category=DeprecationWarning)
 
-        if response.status_code == 200:
-            response = response.json()
-            ticket_status = response['ticket']['status_id']
-            ticket_response = response['comments'][0]['message']
-            file_url_list = response['comments'][0]['files']
-            if ticket_status == 2:
-                if ticket_response:
-                    bs = BeautifulSoup(ticket_response, features='html.parser')
-                    response_text = bs.get_text()
-                else:
-                    response_text = await Ticket.update_state(ticket.ticket_id, TicketStates.error)
+        for ticket in Ticket.list_waiting_get():
+            response = get(
+                url=f'{settings.USEDESK_HOST}/ticket',
+                params={
+                    'api_token': settings.USEDESK_TOKEN,
+                    'ticket_id': ticket.ticket_id,
+                },
+            )
 
-                if '<img' in ticket_response.lower():
-                    async with aiohttp.ClientSession() as session:
-                        image_url = re.findall(r'<img.+?src="(.+?)"', ticket_response)[0]
-                        async with session.get(image_url) as resp:
-                            if resp.status == 200:
-                                image_bytes = await resp.read()
+            if response.status_code == 200:
+                response = response.json()
+                ticket_status = response['ticket']['status_id']
+                ticket_response = response['comments'][0]['message']
+                file_url_list = response['comments'][0]['files']
+                if ticket_status == 2:
+                    if ticket_response:
+                        bs = BeautifulSoup(ticket_response, features='html.parser')
+                        response_text = bs.get_text()
+                    else:
+                        response_text = await Ticket.update_state(ticket.ticket_id, TicketStates.error)
 
-                    keyboard = InlineKeyboardMarkup().add(
-                        InlineKeyboardButton(text=Text.get('menu_support'), callback_data='support_usedesk')
-                    )
+                    if '<img' in ticket_response.lower():
+                        async with aiohttp.ClientSession() as session:
+                            image_url = re.findall(r'<img.+?src="(.+?)"', ticket_response)[0]
+                            async with session.get(image_url) as resp:
+                                if resp.status == 200:
+                                    image_bytes = await resp.read()
 
-                    await Ticket.update_state(ticket.ticket_id, TicketStates.completed)
+                        keyboard = InlineKeyboardMarkup().add(
+                            InlineKeyboardButton(text=Text.get('menu_support'), callback_data='support_usedesk')
+                        )
 
-                    await bot.send_photo(
-                        chat_id=ticket.user.tg_user_id,
-                        photo=image_bytes,
-                        caption=response_text,
-                        parse_mode='html',
-                        reply_markup=keyboard,
-                    )
-                elif file_url_list and isinstance(file_url_list, list) and len(file_url_list) > 0:
-                    doc_url = file_url_list[0]['file']
-                    async with aiohttp.ClientSession() as session:
-                        async with session.get(doc_url) as resp:
-                            if resp.status == 200:
-                                doc_bytes = await resp.read()
+                        await Ticket.update_state(ticket.ticket_id, TicketStates.completed)
 
-                    with tempfile.NamedTemporaryFile(suffix='.docx', delete=False) as tmp_file:
-                        tmp_file.write(doc_bytes)
-                        tmp_filename = tmp_file.name
-
-                    keyboard = InlineKeyboardMarkup().add(
-                        InlineKeyboardButton(text=Text.get('menu_support'), callback_data='support_usedesk')
-                    )
-
-                    await Ticket.update_state(ticket.ticket_id, TicketStates.completed)
-
-                    with open(tmp_filename, 'rb'):
-                        await bot.send_document(
+                        await bot.send_photo(
                             chat_id=ticket.user.tg_user_id,
-                            document=types.input_file.InputFile(tmp_filename),
+                            photo=image_bytes,
                             caption=response_text,
                             parse_mode='html',
                             reply_markup=keyboard,
                         )
+                    elif file_url_list and isinstance(file_url_list, list) and len(file_url_list) > 0:
+                        doc_url = file_url_list[0]['file']
+                        async with aiohttp.ClientSession() as session:
+                            async with session.get(doc_url) as resp:
+                                if resp.status == 200:
+                                    doc_bytes = await resp.read()
 
-                    os.remove(tmp_filename)
-                else:
-                    keyboard = InlineKeyboardMarkup().add(
-                        InlineKeyboardButton(text=Text.get('menu_support'), callback_data='support_usedesk')
-                    )
+                        with tempfile.NamedTemporaryFile(suffix='.docx', delete=False) as tmp_file:
+                            tmp_file.write(doc_bytes)
+                            tmp_filename = tmp_file.name
 
-                    await Ticket.update_state(ticket.ticket_id, TicketStates.completed)
+                        keyboard = InlineKeyboardMarkup().add(
+                            InlineKeyboardButton(text=Text.get('menu_support'), callback_data='support_usedesk')
+                        )
 
-                    await bot.send_message(
-                        chat_id=ticket.user.tg_user_id,
-                        text=response_text,
-                        parse_mode='html',
-                        reply_markup=keyboard,
-                    )
+                        await Ticket.update_state(ticket.ticket_id, TicketStates.completed)
 
-            elif ticket_status == 4:
-                await Ticket.update_state(ticket.ticket_id, TicketStates.error)
+                        with open(tmp_filename, 'rb'):
+                            await bot.send_document(
+                                chat_id=ticket.user.tg_user_id,
+                                document=types.input_file.InputFile(tmp_filename),
+                                caption=response_text,
+                                parse_mode='html',
+                                reply_markup=keyboard,
+                            )
 
-    await bot.close()
+                        os.remove(tmp_filename)
+                    else:
+                        keyboard = InlineKeyboardMarkup().add(
+                            InlineKeyboardButton(text=Text.get('menu_support'), callback_data='support_usedesk')
+                        )
+
+                        await Ticket.update_state(ticket.ticket_id, TicketStates.completed)
+
+                        await bot.send_message(
+                            chat_id=ticket.user.tg_user_id,
+                            text=response_text,
+                            parse_mode='html',
+                            reply_markup=keyboard,
+                        )
+
+                elif ticket_status == 4:
+                    await Ticket.update_state(ticket.ticket_id, TicketStates.error)
+
+        await bot.close()

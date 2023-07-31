@@ -15,11 +15,11 @@ async def notificator_kafka():
     filterwarnings("ignore", category=DeprecationWarning)
     bot = bot_get()
     kafka_config = {
-        'bootstrap.servers': settings.KAFKA_BOOTSTRAP_SERVERS,
-        'security.protocol': settings.KAFKA_SECURITY_PROTOCOL,
+        'bootstrap.servers': settings.KAFKA_HOSTS,
+        'security.protocol': settings.KAFKA_SP,
         'sasl.mechanism': settings.KAFKA_SASL_MECHANISM,
-        'sasl.username': settings.KAFKA_SASL_PLAIN_USERNAME,
-        'sasl.password': settings.KAFKA_SASL_PLAIN_PASSWORD,
+        'sasl.username': settings.KAFKA_SASL_USER,
+        'sasl.password': settings.KAFKA_SASL_PASSWORD,
         'group.id': 'user_consumer_group',
         'auto.offset.reset': 'earliest'
     }
@@ -41,39 +41,35 @@ async def notificator_kafka():
                 value = value.decode('utf-8')
                 data = json.loads(value)
                 message_type = data.get('type')
-                if message_type == 'event':
+                if message_type == 'timetable':
                     message_action = data.get('action')
                     if message_action == 'update':
                         message = ""
-                        event_id = data.get('id', {}).get('event', {}).get('uuid')
-                        user_data = await api_client.xle.get_events_user(event_id)
+                        event_id = data.get('id', {}).get('timetable', {}).get('uuid')
+                        print(data)
+                        user_data = await api_client.event.get_events_user(event_id)
+                        print(user_data)
                         unti_ids = {user.get('unti_id') for user in user_data}
+                        print(unti_ids)
                         arhpg_ids = await User.get_all_arhpg_id()
+                        print(arhpg_ids)
 
                         tg_user_ids = list(unti_ids.intersection(arhpg_ids))
+                        print(tg_user_ids)
 
                         event_title = data.get('data', {}).get('title', '')
-                        new_time = data.get('data', {}).get('started_at', '')
-                        new_data = data.get('data', {}).get('ended_at', '')
+                        new_datatime = data.get('data', {}).get('started_at', '')
+                        delete = data.get('data', {}).get('is_deleted', 1)
 
-                        if new_time and new_data:
-                            message = Text.get('update_data_datatime').format(event_title=event_title) \
-                                    + Text.get('new_datatime_program').format(new_data=new_data, new_time=new_time)  \
+                        if new_datatime:
+                            message = Text.get('update_datatime_program').format(event_title=event_title) + '\n' \
                                     + Text.get('current_program')
-                        elif new_data:
-                            message = Text.get('update_data').format(event_title=event_title) \
-                                    + Text.get('new_data_program').format(new_data=event_title) \
-                                    + Text.get('current_program')
-                        elif new_time:
-                            message = Text.get('update_time').format(event_title=event_title) \
-                                    + Text.get('new_time_program').format(new_time=event_title) \
-                                    + Text.get('current_program')
-                        if message_action == 'delete':
+                        if delete:
                             message = Text.get('cancellation_program').format(event_title=event_title) \
                                       + Text.get('current_program')
 
                         if tg_user_ids:
                             for tg_user_id in tg_user_ids:
-                                bot.send_message(chat_id=tg_user_id, text=message)
+                                await bot.send_message(chat_id=tg_user_id, text=message)
 
-                consumer.close()
+    consumer.close()
