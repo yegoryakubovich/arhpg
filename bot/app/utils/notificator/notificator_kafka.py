@@ -46,16 +46,13 @@ async def notificator_kafka():
                     if message_action == 'update':
                         message = ""
                         event_id = data.get('id', {}).get('timetable', {}).get('uuid')
-                        print(data)
+
                         user_data = await api_client.event.get_events_user(event_id)
-                        print(user_data)
                         unti_ids = {user.get('unti_id') for user in user_data}
-                        print(unti_ids)
                         arhpg_ids = await User.get_all_arhpg_id()
-                        print(arhpg_ids)
 
                         tg_user_ids = list(unti_ids.intersection(arhpg_ids))
-                        print(tg_user_ids)
+
 
                         event_title = data.get('data', {}).get('title', '')
                         new_datatime = data.get('data', {}).get('started_at', '')
