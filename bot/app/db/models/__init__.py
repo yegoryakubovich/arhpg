@@ -8,8 +8,10 @@ from app.db.models.user import User as UserModel
 from app.db.models.notification import Notification as NotificationModel
 from app.db.models.notification_user import NotificationUser as NotificationUserModel
 from app.db.models.notification_report import NotificationReport as NotificationReportModel
+from app.db.models.tag import Tag
 from app.db.models.users_tags import UserTag
 from app.db.models.oauth import Oauth as OauthModel
+
 
 models = (
     SettingModel,
@@ -22,6 +24,7 @@ models = (
     NotificationModel,
     NotificationUserModel,
     NotificationReportModel,
+    Tag,
     UserTag,
     OauthModel,
 )

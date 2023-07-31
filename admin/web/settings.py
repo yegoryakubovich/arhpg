@@ -4,6 +4,7 @@ from pathlib import Path
 import pymysql
 from environs import Env
 
+from .check_folders import check_folders
 from .config import web_settings
 
 
@@ -14,6 +15,7 @@ SECRET_KEY = 'django-insecure-n+*62!z*a5l$a6&!hooi0@b5$i-n0#i@fbrfcjtuk3!2ebu63r
 DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', web_settings.ADMIN_WEB_IP]
+# CSRF_TRUSTED_ORIGINS = [f"https://{web_settings.ADMIN_WEB_IP}", f"https://www.{web_settings.ADMIN_WEB_IP}"]
 
 # Application definition
 INSTALLED_APPS = [
@@ -84,5 +86,6 @@ STATICFILES_DIRS = [BASE_DIR / "static", ]
 MEDIA_DIR = os.path.join(BASE_DIR, 'media')
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
+check_folders()
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

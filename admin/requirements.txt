@@ -7,3 +7,4 @@ furl
 pydantic==1.*
 httpx
 django-celery-beat
+openpyxl

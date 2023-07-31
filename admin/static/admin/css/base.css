@@ -501,6 +501,7 @@ input[type=number], input[type=tel], textarea, select, .vTextField {
     margin-top: 0;
     color: var(--body-fg);
     background-color: var(--body-bg);
+    width: 95%;
 }
 
 input[type=text]:focus, input[type=password]:focus, input[type=email]:focus,
@@ -609,6 +610,9 @@ input[type=button][disabled].default {
 .module table {
     border-collapse: collapse;
     caption-side: top;
+}
+.inline-group th, .inline-group tr {
+    text-align: center;
 }
 
 /* MESSAGES & ERRORS */
