@@ -1,6 +1,4 @@
-import warnings
 from datetime import datetime, timezone
-from warnings import filterwarnings
 
 from app.aiogram import bot_get
 from app.aiogram.kbs import Kbs

@@ -2,8 +2,6 @@ import asyncio
 import os
 import re
 import tempfile
-import warnings
-from warnings import filterwarnings
 
 import aiohttp
 from aiogram import types
@@ -16,6 +14,7 @@ from app.db.manager import db_manager
 from app.repositories import Ticket, Text
 from app.repositories.ticket import TicketStates
 from settings import settings
+
 
 lock = asyncio.Lock()
 

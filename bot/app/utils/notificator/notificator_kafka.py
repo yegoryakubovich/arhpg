@@ -1,5 +1,4 @@
 import json
-from warnings import filterwarnings
 
 from confluent_kafka import Consumer
 
