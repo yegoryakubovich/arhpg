@@ -32,8 +32,8 @@ class FaqAdmin(admin.ModelAdmin):
     @admin.display(description="Приоритетность")
     def button_priority(self, model: Faq):
         return format_html(" ".join([
-            f'<a href="/admin/admin_web/faq_priority_up?faq_id={model.id}"><input type="button" value="↑"></a>',
-            f'<a href="/321"><input type="button" value="↓"></a>'
+            f'<a href="/admin/{PriorityUpView.path_link}?faq_id={model.id}"><input type="button" value="↑"></a>',
+            f'<a href="/admin/{PriorityDownView.path_link}?faq_id={model.id}"><input type="button" value="↓"></a>',
         ]))
 
     def get_queryset(self, request):
@@ -47,14 +47,33 @@ class PriorityUpView(View):
     def get(self, request):
         faq_id = int(request.GET.get("faq_id"))
         faq = Faq.objects.filter(id=faq_id).first()
-        faq_up = Faq.objects.filter(priority=faq.priority + 1).first()
+        faq_up = Faq.objects.filter(priority=(faq.priority + 1)).first()
         if not faq_up:
-            messages.error("Error")
+            messages.error(request, f"Выбранный FAQ находится наверху")
             return HttpResponseRedirect("/admin/admin_web/faq/")
 
         faq.priority += 1
-        faq_up -= 1
-
         faq.save()
+
+        faq_up.priority -= 1
         faq_up.save()
+        return HttpResponseRedirect("/admin/admin_web/faq/")
+
+
+class PriorityDownView(View):
+    path_link = "admin_web/faq_priority_down"
+
+    def get(self, request):
+        faq_id = int(request.GET.get("faq_id"))
+        faq = Faq.objects.filter(id=faq_id).first()
+        faq_down = Faq.objects.filter(priority=(faq.priority - 1)).first()
+        if not faq_down:
+            messages.error(request, f"Выбранный FAQ находится внизу")
+            return HttpResponseRedirect("/admin/admin_web/faq/")
+
+        faq.priority -= 1
+        faq.save()
+
+        faq_down.priority += 1
+        faq_down.save()
         return HttpResponseRedirect("/admin/admin_web/faq/")
