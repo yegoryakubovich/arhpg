@@ -20,14 +20,23 @@ async def notificator_tag():
                 title=tag_data['title']
             )
             tag.save()
+            existing_tags_dict[tag_id] = tag
+        else:
+            tag = existing_tags_dict[tag_id]
 
-            response = await api_client.user.get_users_by_tags(tag_id)
-            if response['result']['successful']:
-                users = response['payload']
-                if users:
-                    all_arhpg_id = await User.get_all_arhpg_id()
-                    for user_data in users:
-                        user_id = user_data['leader_id']
-                        if user_id in all_arhpg_id:
-                            tag_user = await UserTag.create(tag_id, user_id)
+        response = await api_client.user.get_users_by_tags(tag_id)
+        if response['result']['successful']:
+            users = response['payload']
+            if users:
+                all_arhpg_id = await User.get_all_arhpg_id()
+                for user_data in users:
+                    arhpg_id = user_data['unti_id']
+                    if arhpg_id in all_arhpg_id:
+                        user = await User.get_arhpg(arhpg_id)
+                        existing_tag_user = await UserTag.get_user_tag(user_id=user.id, tag_id=tag.id)
+                        if not existing_tag_user:
+                            tag_user = await UserTag.create(
+                                user=user.id,
+                                tag=tag.id,
+                            )
                             tag_user.save()
