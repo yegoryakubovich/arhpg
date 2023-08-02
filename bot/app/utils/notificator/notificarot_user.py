@@ -1,6 +1,4 @@
-import warnings
 from datetime import datetime, timezone
-from warnings import filterwarnings
 
 from loguru import logger
 
