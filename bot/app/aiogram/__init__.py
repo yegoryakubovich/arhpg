@@ -4,7 +4,7 @@ from aiogram.utils import executor
 
 from app.aiogram.bot import bot_get
 from app.aiogram.handlers.register import handlers_register
-
+from app.utils.logger import configure_logger
 
 storage = MemoryStorage()
 #  RedisStorage2(
@@ -18,6 +18,10 @@ storage = MemoryStorage()
 dp = Dispatcher(bot=bot_get(), storage=storage)
 
 
+async def on_startup(_):
+    configure_logger(True)
+
+
 def bot_create():
     handlers_register(dp=dp)
-    executor.start_polling(dispatcher=dp, )
+    executor.start_polling(dispatcher=dp, on_startup=on_startup)

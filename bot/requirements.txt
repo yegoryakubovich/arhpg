@@ -11,3 +11,4 @@ confluent-kafka
 pysocks
 cryptography
 pydantic==1.*
+loguru

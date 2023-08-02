@@ -9,6 +9,7 @@ import aiohttp
 from aiogram import types
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from bs4 import BeautifulSoup
+from loguru import logger
 from requests import get
 
 from app.aiogram.bot import bot_get
@@ -22,6 +23,7 @@ lock = asyncio.Lock()
 
 @db_manager
 async def notificator_usedesk():
+    logger.info("notificator_usedesk")
     bot = bot_get()
     for ticket in Ticket.list_waiting_get():
         response = get(

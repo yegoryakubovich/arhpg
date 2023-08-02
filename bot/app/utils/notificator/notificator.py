@@ -1,6 +1,7 @@
 from datetime import datetime, timezone
 
 import requests
+from loguru import logger
 
 from app.aiogram import bot_get
 from app.db.manager import db_manager
@@ -15,6 +16,7 @@ bot = bot_get()
 
 @db_manager
 async def notificator():
+    logger.info("notificator")
     utc_now = datetime.now(timezone.utc)
     notifications = Notification.list_waiting_get(utc_now)
     for notification in notifications:

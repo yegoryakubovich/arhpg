@@ -21,7 +21,7 @@ class FaqAttachment(models.Model):
 
     faq = models.ForeignKey(Faq, on_delete=models.CASCADE, related_name="faqs_attachments_faq", verbose_name="FAQ")
     type = models.CharField(max_length=8, verbose_name="Тип")
-    value = models.CharField(max_length=2048, verbose_name="Значение")
+    value = models.TextField(verbose_name="Значение")
 
     def __str__(self):
         return f"{self.faq} ({self.type})"

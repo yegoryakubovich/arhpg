@@ -31,7 +31,7 @@ class AddFaqBaseForm(forms.Form):
 
 
 class AddFaqTextForm(AddFaqBaseForm):
-    text_answer = forms.CharField(label="Текст ответа", required=False)
+    text_answer = forms.CharField(widget=forms.Textarea, label="Текст ответа", required=False)
     documents = MultipleFileField(label="Документы", required=False)
     photos = MultipleFileField(label="Фотографии", required=False)
 

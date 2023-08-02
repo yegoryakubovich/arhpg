@@ -2,6 +2,8 @@ import warnings
 from datetime import datetime, timezone
 from warnings import filterwarnings
 
+from loguru import logger
+
 from app.aiogram import bot_get
 from app.aiogram.kbs import Kbs
 from app.db.manager import db_manager
@@ -11,6 +13,7 @@ from app.utils.api_client import api_client
 
 @db_manager
 async def notificator_user():
+    logger.info("notificator_user")
     bot = bot_get()
     for oauth in Oauth.list_get():
         if oauth.expired.replace(tzinfo=timezone.utc) <= datetime.now(timezone.utc):

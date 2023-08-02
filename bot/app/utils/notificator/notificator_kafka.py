@@ -2,6 +2,7 @@ import json
 from warnings import filterwarnings
 
 from confluent_kafka import Consumer
+from loguru import logger
 
 from app.aiogram import bot_get
 from app.db.manager import db_manager
@@ -12,6 +13,7 @@ from settings import settings
 
 @db_manager
 async def notificator_kafka():
+    logger.info("notificator_kafka")
     bot = bot_get()
     kafka_config = {
         'bootstrap.servers': settings.KAFKA_HOSTS,
