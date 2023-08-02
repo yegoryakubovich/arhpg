@@ -19,6 +19,7 @@ class Oauth(BaseRepository):
                 expired=expired
             )
             user.save()
+            print(user)
         return user
 
     @staticmethod

@@ -15,14 +15,14 @@ def notificator_thread():
     loop = new_event_loop()
     set_event_loop(loop)
 
-    schedule.every(10).seconds.do(notificator)
-    #schedule.every(11).seconds.do(notificator_kafka)
-    schedule.every(1).minute.do(notificator_usedesk)
-    schedule.every(3).seconds.do(notificator_user)
-    schedule.every(3).seconds.do(notificator_tag)
+    schedule.every(10).minutes.do(notificator)
+    schedule.every(10).seconds.do(notificator_kafka)
+    schedule.every(3).seconds.do(notificator_usedesk)
+    schedule.every(5).seconds.do(notificator_user)
+    schedule.every(30).minutes.do(notificator_tag)
     while True:
         loop.run_until_complete(schedule.run_pending())
-        sleep(1)
+        sleep(3)
 
 
 def notificator_create():
