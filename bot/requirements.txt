@@ -13,4 +13,4 @@ cryptography
 pydantic==1.*
 loguru
 aiokafka
-aiohttp
+
